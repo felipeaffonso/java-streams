@@ -36,8 +36,8 @@ Tá…. mas como eu faço para obter o meu próprio Stream para começar a prati
 Bom, existem algumas maneiras diferentes de se fazer isso, abaixo mostrarei algumas. Ah, e por enquanto ainda não se preocupe com o código, vou entrar no detalhe mais adiante.
 
  - Através de uma Collection, utilizando os métodos: 
-.stream() 
-.parallelStream()
+`.stream()`
+`.parallelStream()`
 
 ```java
 Collection<String> stringCollection = Arrays.asList("First", "Second", "Third");
@@ -48,7 +48,7 @@ stringCollection.parallelStream()
   .map(String::toUpperCase)
   .forEach(System.out::println);
 ```
- - Através de um vetor via Arrays.stream(Object[])
+ - Através de um vetor via `Arrays.stream(Object[])`
 
 ```java
 String[] array = {"First", "Second", "Third"};
