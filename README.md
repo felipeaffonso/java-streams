@@ -10,14 +10,14 @@ https://pt.wikipedia.org/wiki/Stream
 
 A documentação oficial da interface Stream define que ela representa uma sequência de elementos que suporta operações agregadas sequenciais e paralelas.
 
-[Imagem 01]
+![Imagem-01](image-01.png)
 
 Tradução Livre: Uma sequência de elementos que suporta operações agregadas sequenciais e paralelas
 Então podemos interagir com esse Stream de dados de várias maneiras, podemos transformar valores, iterar sobre seus elementos, ordenar as informações com base em algum critério (por exemplo através de um Predicate), executar reduções mutáveis e não mutáveis, filtrar elementos também com base em critérios ou funções, enfim, uma infinidade de maneiras diferentes.
 
 O pacote java.util.stream contéma grande parte dos recursos que utilizamos nos exemplos deste artigo, então vamos entrar um pouco mais nos detalhes. Segundo a própria documentação, esta é a descrição do pacote:
 
-[Imagem 02]
+![Imagem 02](image-02.png)
 
 Operações e Pipelines
 As operações em Stream são dividas em intermediate e terminal, e a combinação entre elas compõem uma Stream Pipeline. Um pipeline consiste em um origem (como uma Collection, um array, etc) e seguido por zero ou mais operações intermediate, tais como Stream.filter ou Stream.map. Como você pode deduzir, o que ficou faltando é a operação terminal, como por exemplo Stream.forEach ou Stream.reduce.
@@ -143,7 +143,7 @@ private static Collection<State> initStates() {
  }
  ```
  
-###Map
+### Map
 
 Dada um estado, gostaríamos de imprimir na tela em ordem alfabética os nomes das cidades que o compõem. Segue um exemplo de solução:
 
@@ -167,7 +167,7 @@ Em seguida a chamada de map é feita – que sabemos ser uma operação intermed
 
 Nossa pipeline já executou duas operações intermediate, ordenamos o Stream pelo nome da cidade e em seguida executamos um mapeamento para o nome da cidade ser retornado. Podemos então executar uma operação do tipo terminal: forEach(), que recebe como parâmetro uma função que será executada para cada um dos elementos do Stream. Utilizamos o método System.out.printLn, porém, mais uma vez utilizamos method reference e passamos assim: System.out::printLn.
 
-###Filter
+### Filter
 
 ```java
 private static void filter(Collection<State> states) {
