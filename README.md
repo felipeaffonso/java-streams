@@ -39,28 +39,43 @@ Bom, existem algumas maneiras diferentes de se fazer isso, abaixo mostrarei algu
 .stream() 
 .parallelStream()
 
-`Collection<String> stringCollection = Arrays.asList("First", "Second", "Third");
+```java
+Collection<String> stringCollection = Arrays.asList("First", "Second", "Third");
 stringCollection.stream()
   .map(String::toUpperCase)
   .forEach(System.out::println);
 stringCollection.parallelStream()
   .map(String::toUpperCase)
-  .forEach(System.out::println);`
-
+  .forEach(System.out::println);
+```
  - Através de um vetor via Arrays.stream(Object[])
 
-`String[] array = {"First", "Second", "Third"};
+```java
+String[] array = {"First", "Second", "Third"};
+```
+
+```java
 Arrays.stream(array)
         .map(String::toUpperCase)
-  .forEach(System.out::println);`
+  .forEach(System.out::println);
+```
   
  - A partir de factory methods estáticos na classes de stream, assim como:
-`Stream.of(Object[])
+```java
+Stream.of(Object[])
+```
+```java
 IntStream.of(int…) 
+```
+```java
 IntStream.range(int, int) 
-Stream.iterate(Object, UnaryOperator)`
+```
+```java
+Stream.iterate(Object, UnaryOperator)
+```
 
-`String[] array = {"First", "Second", "Third"};
+```java
+String[] array = {"First", "Second", "Third"};
 //Using Array
 Stream.of(array)
         .map(String::toUpperCase)
@@ -68,16 +83,23 @@ Stream.of(array)
 //Using varargs
 Stream.of("One", "Two", "Three")
         .map(String::toUpperCase)
-  .forEach(System.out::println);`
+  .forEach(System.out::println);
+```
   
-`//SingleItem or Varags
-IntStream.of(1, 3, 2, 5, 4).sorted().forEach(System.out::println);`
+```java
+//SingleItem or Varags
+IntStream.of(1, 3, 2, 5, 4).sorted().forEach(System.out::println);
+```
 
-`IntStream.range(1, 10).forEach(System.out::println);`
+```java
+IntStream.range(1, 10).forEach(System.out::println);
+```
 
-`Stream.iterate(0, n -> n + 1)
+```java
+Stream.iterate(0, n -> n + 1)
   .limit(10)
-  .forEach(System.out::println);`
+  .forEach(System.out::println);
+```
   
  - As linhas de um arquivo podem ser obtidas em um stream: `BufferedReader.lines()`
  
@@ -87,7 +109,8 @@ IntStream.of(1, 3, 2, 5, 4).sorted().forEach(System.out::println);`
 
 É agora! Vamos partir para alguns exemplos de como podemos utilizar os Streams com a linguagem Java. Abaixo estão as classes que utilizaremos nos nossos Stream de dados:
 
-`public class City {
+```java
+public class City {
    private Long id;
    private String name;
    private Integer population;
@@ -99,10 +122,11 @@ IntStream.of(1, 3, 2, 5, 4).sorted().forEach(System.out::println);`
    private Collection<City> cities;
    //Getters and Setters
  }
- `
+ ```
 Então temos o seguinte método para criar 2 estados, cada um com três cidades cada:
 
-`private static Collection<State> initStates() {
+```java
+private static Collection<State> initStates() {
    final Collection<City> saoPauloCities = asList(
      new City(1L, "Santo André", 100000),
      new City(2L, "São Bernardo do Campo", 150000),
@@ -116,22 +140,26 @@ Então temos o seguinte método para criar 2 estados, cada um com três cidades 
    final State saoPaulo = new State(1L, "São Paulo", saoPauloCities);
    final State rioDeJaneiro = new State(2L, "Rio de Janeiro", rioDeJaneiroCities);
    return asList(saoPaulo, rioDeJaneiro);
- }`
+ }
+ ```
  
 ###Map
 
 Dada um estado, gostaríamos de imprimir na tela em ordem alfabética os nomes das cidades que o compõem. Segue um exemplo de solução:
 
-`saoPaulo.getCities()
+```java
+saoPaulo.getCities()
     .stream()         
     .sorted(Comparator.comparing(City::getName))
     .map(City::getName)
-    .forEach(System.out::println);`
+    .forEach(System.out::println);
+ ```
     
 Output: 
-`Santo André
+```Santo André
 São Bernardo do Campo
-São Caetano do Sul`
+São Caetano do Sul
+```
 
 No exemplo acima, o stream de cities foi iniciado a partir da variável saoPaulo, assim começamos nossa pipeline. A primeira operação que vamos chamar é sorted, que como sabemos préviamente, é do tipo intermediate e stateful. O método sorted espera como parâmetro um Comparator, que nesse caso utilizamos o método estático Comparator.comparing para gerar um comparator a partir do atributo name, que é exposto através de getName.
 
@@ -141,7 +169,8 @@ Nossa pipeline já executou duas operações intermediate, ordenamos o Stream pe
 
 ###Filter
 
-`private static void filter(Collection<State> states) {
+```java
+private static void filter(Collection<State> states) {
     System.out.println("Filtering");
     states.forEach(state -> {
   final List<City> bigCities = state.getCities().stream()
@@ -151,11 +180,14 @@ Nossa pipeline já executou duas operações intermediate, ordenamos o Stream pe
     bigCities.stream()
         .map(City::getName).collect(Collectors.joining(", ")));
     });
-}`
+}
+```
 
 Output: 
-`São Paulo has big cities: Santo André, São Bernardo do Campo
- Rio de Janeiro has big cities: Rio de Janeiro`
+```
+São Paulo has big cities: Santo André, São Bernardo do Campo
+ Rio de Janeiro has big cities: Rio de Janeiro
+```
  
 Agora estamos iterando os states, dentro de cada estando estamos criando um Stream da coleção de cities e executando um filter. O método filter recebe como parâmetro um Predicate. No exemplo acima usamos uma lambda function que através do elemento city, verifica se o mesmo tem o atributo population com valor maior que 100000. Na sequência é chamado o método collect(Collectors.toList()), que pega todas cidades que atenderam à condição do Predicate e joga em uma lista: List<City> bigCities. Finalmente é executado o print com o nome do state e concatena com a frase ” has big cities: “ e um Stream com as cidades, que é aplicada uma tranformação .map(City::getName) para poder coletar os nomes utilizando o Collectors.joining(“, “) que devolve uma String com os nomes das cidades separadas por vírgula.
 
