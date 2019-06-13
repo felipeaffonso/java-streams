@@ -186,7 +186,7 @@ private static void filter(Collection<State> states) {
 Output: 
 ```
 São Paulo has big cities: Santo André, São Bernardo do Campo
- Rio de Janeiro has big cities: Rio de Janeiro
+Rio de Janeiro has big cities: Rio de Janeiro
 ```
  
 Agora estamos iterando os states, dentro de cada estando estamos criando um Stream da coleção de cities e executando um filter. O método filter recebe como parâmetro um Predicate. No exemplo acima usamos uma lambda function que através do elemento city, verifica se o mesmo tem o atributo population com valor maior que 100000. Na sequência é chamado o método collect(Collectors.toList()), que pega todas cidades que atenderam à condição do Predicate e joga em uma lista: List<City> bigCities. Finalmente é executado o print com o nome do state e concatena com a frase ” has big cities: “ e um Stream com as cidades, que é aplicada uma tranformação .map(City::getName) para poder coletar os nomes utilizando o Collectors.joining(“, “) que devolve uma String com os nomes das cidades separadas por vírgula.
